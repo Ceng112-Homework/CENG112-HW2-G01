@@ -1,12 +1,12 @@
 package Interfaces;
 
 public interface DequeInterface<T> {
-    void addToFront(T item);
-    void addToBack(T item);
+    void addFront(T item);
+    void addBack(T item);
     T removeFront();
     T removeBack();
-    T[] getAll(); // I don't know what should this method returns.
     boolean isEmpty();
     void clear();
     String display();
+    T[] getAll();
 }

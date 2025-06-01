@@ -5,46 +5,10 @@ import Interfaces.DequeInterface;
 public class GenericDeque<T> implements DequeInterface<T> {
     private DLNode firstNode;
     private DLNode lastNode;
+    private int numberOfItems;
 
     public GenericDeque() {
-        firstNode = null;
-        lastNode = null;
-    }
-
-    public class DLNode {
-        private T data;
-        private DLNode next;
-        private DLNode previous;
-
-        public DLNode(DLNode previous, T data, DLNode next) {
-            this.data = data;
-            this.next = next;
-            this.previous = previous;
-        }
-
-        public DLNode getNextNode() {
-            return next;
-        }
-
-        public void setNextNode(DLNode next) {
-            this.next = next;
-        }
-
-        public DLNode getPreviousNode() {
-            return previous;
-        }
-
-        public void setPreviousNode(DLNode previous) {
-            this.previous = previous;
-        }
-
-        public T getData() {
-            return data;
-        }
-
-        public void setData(T data) {
-            this.data = data;
-        }
+        clear();
     }
 
     public T getFront() {
@@ -65,7 +29,7 @@ public class GenericDeque<T> implements DequeInterface<T> {
         }
     }
 
-    public void addToFront(T newEntry) {
+    public void addFront(T newEntry) {
         DLNode newNode = new DLNode(null, newEntry, firstNode);
         if (isEmpty()) {
             lastNode = newNode;
@@ -73,10 +37,10 @@ public class GenericDeque<T> implements DequeInterface<T> {
             firstNode.setPreviousNode(newNode);
         }
         firstNode = newNode;
-
+        numberOfItems++;
     }
 
-    public void addToBack(T newEntry){
+    public void addBack(T newEntry){
         DLNode newNode = new DLNode(lastNode, newEntry, null);
         if (isEmpty()) {
             firstNode = newNode;
@@ -84,38 +48,45 @@ public class GenericDeque<T> implements DequeInterface<T> {
             lastNode.setNextNode(newNode);
         }
         lastNode = newNode;
+        numberOfItems++;
     }
 
     public T removeFront() {
-        T front = getFront();
-        assert firstNode != null;
-        firstNode = firstNode.getNextNode();
-        if (firstNode != null) {
-            firstNode.setPreviousNode(null);
-        } else {
-            lastNode = null; // If the deque is now empty, set lastNode to null
+        T front = null;
+        if (!isEmpty()) {
+            front = firstNode.getData();
+            firstNode = firstNode.getNextNode();
+            if (firstNode == null)
+                lastNode = null;
+            else
+                firstNode.setPreviousNode(null);
+            numberOfItems--;
         }
         return front;
     }
 
     public T removeBack() {
-        T back = getBack();
-        assert lastNode != null;
-        lastNode = lastNode.getPreviousNode();
-
-        if (lastNode != null) {
-            lastNode.setNextNode(null);
-        } else {
-            firstNode = null; // If the deque is now empty, set firstNode to null
+        T back = null;
+        if (!isEmpty()) {
+            back = lastNode.getData();
+            lastNode = lastNode.getPreviousNode();
+            if (lastNode == null)
+                firstNode = null;
+            else
+                lastNode.setNextNode(null);
+            numberOfItems--;
         }
         return back;
     }
 
     public T[] getAll() {
-        // This method should return an array of all elements in the deque.
-        // However, the implementation is not provided here.
-        // You can implement it based on your requirements.
-        return null; // Placeholder return statement
+        T[] items = (T[]) new Object[numberOfItems];
+        DLNode currentNode = firstNode;
+        for (int i = 0; i < numberOfItems; i++) {
+            items[i] = currentNode.getData();
+            currentNode = currentNode.getNextNode();
+        }
+        return items;
     }
 
     public boolean isEmpty() {
@@ -125,6 +96,7 @@ public class GenericDeque<T> implements DequeInterface<T> {
     public void clear() {
         firstNode = null;
         lastNode = null;
+        numberOfItems = 0;
     }
 
     public String display() {
@@ -135,5 +107,41 @@ public class GenericDeque<T> implements DequeInterface<T> {
             currentNode = currentNode.getNextNode();
         }
         return sb.toString().trim(); // Return the string representation of the deque
+    }
+
+    private class DLNode {
+        private T data;
+        private DLNode next;
+        private DLNode previous;
+
+        DLNode(DLNode previous, T data, DLNode next) {
+            this.data = data;
+            this.next = next;
+            this.previous = previous;
+        }
+
+        DLNode getNextNode() {
+            return next;
+        }
+
+        void setNextNode(DLNode next) {
+            this.next = next;
+        }
+
+        DLNode getPreviousNode() {
+            return previous;
+        }
+
+        void setPreviousNode(DLNode previous) {
+            this.previous = previous;
+        }
+
+        T getData() {
+            return data;
+        }
+
+        void setData(T data) {
+            this.data = data;
+        }
     }
 }

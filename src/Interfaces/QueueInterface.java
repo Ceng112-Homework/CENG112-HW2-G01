@@ -6,5 +6,5 @@ public interface QueueInterface<T> {
     T getFront();
     boolean isEmpty();
     void clear();
-    String toString();
+    T[] getAll();
 }
