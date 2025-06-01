@@ -1,9 +1,8 @@
 package Models;
 
-import Interfaces.HasPriority;
-
 import java.util.Date;
 import Interfaces.HasPriority;
+
 
 public class Ticket implements Comparable<Ticket>, HasPriority {
     String customerName;
@@ -28,16 +27,31 @@ public class Ticket implements Comparable<Ticket>, HasPriority {
                 '}';
     }
 
+    /**
+     * Compare the ticket with another ticket.
+     * If their priorities are the same, it compares by the arrival times.
+     * -1 => This ticket has more priority
+     *  1 => This ticket has less priority
+     * @param otherTicket the object to be compared.
+     * @return the comparison result
+     */
     @Override
-    public int compareTo(Ticket o) {
+    public int compareTo(Ticket otherTicket) {
         int thisPriority = this.getPriorityValue();
-        int otherPriority = o.getPriorityValue();
+        int otherPriority = otherTicket.getPriorityValue();
         if (thisPriority != otherPriority)
             return otherPriority - thisPriority; // High > Medium > Low
         else
-            return this.arrivalTime.compareTo(o.arrivalTime);
+            return this.arrivalTime.compareTo(otherTicket.arrivalTime);
     }
 
+    /**
+     * get the priority value of the ticket
+     * 3 -> high
+     * 2 -> medium
+     * 1 -> low
+     * @return the priority value
+     */
     @Override
     public int getPriorityValue() {
         int value = 0;
@@ -47,6 +61,5 @@ public class Ticket implements Comparable<Ticket>, HasPriority {
             case "low" -> value = 1;
         }
         return value;
-
     }
 }

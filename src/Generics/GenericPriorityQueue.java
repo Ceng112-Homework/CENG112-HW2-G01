@@ -1,7 +1,6 @@
 package Generics;
 
 import Interfaces.HasPriority;
-import Interfaces.PriorityQueueInterface;
 import Interfaces.QueueInterface;
 
 import java.util.ArrayList;
@@ -10,9 +9,9 @@ import java.util.List;
 
 public class GenericPriorityQueue<T extends Comparable<T> & HasPriority> {
     // Three different queues for low, medium and high priority items
-    private QueueInterface<T> low;
-    private QueueInterface<T> medium;
-    private QueueInterface<T> high;
+    private final QueueInterface<T> low;
+    private final QueueInterface<T> medium;
+    private final QueueInterface<T> high;
 
     public GenericPriorityQueue() {
         low = new GenericQueue<>();
@@ -20,6 +19,11 @@ public class GenericPriorityQueue<T extends Comparable<T> & HasPriority> {
         high= new GenericQueue<>();
     }
 
+    /**
+     * Add an item to the priority queue.
+     * @param item item to be added.
+     * @return true if the item is added, false otherwise
+     */
     public boolean offer(T item) {
         int priorityValue = item.getPriorityValue();
         // priorityValue = 3 -> High priority
@@ -41,6 +45,10 @@ public class GenericPriorityQueue<T extends Comparable<T> & HasPriority> {
         return added;
     }
 
+    /**
+     * Removes and return the item with the greatest priority.
+     * @return The item with the greatest priority.
+     */
     public T poll() {
         T item = null;
         // Check items in decreasing order of priority.
@@ -57,13 +65,22 @@ public class GenericPriorityQueue<T extends Comparable<T> & HasPriority> {
         return item;
     }
 
+    /**
+     * Check if the priority queue is empty.
+     * @return true if the priority queue is empty, false otherwise
+     */
     public boolean isEmpty() {
         // Check if all queues are empty
         return (low.isEmpty() && medium.isEmpty() && high.isEmpty());
     }
 
+    /**
+     * Returns an array with all the items in the priority queue.
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public T[] getAll() {
+        // Note: I needed to do google searches to figure out how to implement getAll methods.
         // An arraylist to hold all items in high, medium and low queues.
         List<T> allItems = new ArrayList<>();
 
@@ -82,13 +99,11 @@ public class GenericPriorityQueue<T extends Comparable<T> & HasPriority> {
         // Create a generic array using reflection
         // java.lang.reflect.Array.newInstance(componentType, length)
         // componentType example: Ticket.class
-        // Needed to google search for the method.
         T[] result = (T[]) java.lang.reflect.Array.newInstance(
                 sampleArray.getClass().getComponentType(),
                 allItems.size()
         );
 
         return allItems.toArray(result);
-
     }
 }

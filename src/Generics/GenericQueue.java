@@ -18,6 +18,10 @@ public class GenericQueue<T> implements QueueInterface<T> {
         clear();
     }
 
+    /**
+     * Add a new entry to the queue.
+     * @param newEntry The entry to be added.
+     */
     public void enqueue(T newEntry) {
         Node newNode = new Node(newEntry, null);
         if (isEmpty()) {
@@ -29,6 +33,10 @@ public class GenericQueue<T> implements QueueInterface<T> {
         numberOfItems++;
     }
 
+    /**
+     * Remove the first item in the queue.
+     * @return The removed item.
+     */
     public T dequeue() {
         T front = null;
         if (!isEmpty()) {
@@ -43,6 +51,10 @@ public class GenericQueue<T> implements QueueInterface<T> {
         return front;
     }
 
+    /**
+     * Observe the first item in the queue without removing.
+     * @return The first item in the queue.
+     */
     public T getFront() {
         if (isEmpty()) {
             /*throw new Exception("Queue is empty");*/
@@ -52,14 +64,21 @@ public class GenericQueue<T> implements QueueInterface<T> {
         }
     }
 
+    /**
+     * Check if the queue is empty.
+     * @return true if queue is empty, false otherwise.
+     */
     public boolean isEmpty() {
         return firstNode == null && lastNode == null;
     }
 
+    /**
+     * @return The array of the items in the queue
+     */
     @SuppressWarnings("unchecked")
     public T[] getAll() {
         if (isEmpty()) {
-            return (T[]) new Object[0]; // return empty array if queue is empty
+            return (T[]) java.lang.reflect.Array.newInstance(Comparable.class, 0);
         }
 
         T sample = firstNode.getData();
@@ -73,20 +92,13 @@ public class GenericQueue<T> implements QueueInterface<T> {
         return items;
     }
 
+    /**
+     * Clear the queue.
+     */
     public void clear() {
         firstNode = null;
         lastNode = null;
         numberOfItems = 0;
-    }
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        Node currentNode = firstNode;
-        while (currentNode != null) {
-            sb.append(currentNode.getData()).append(" ");
-            currentNode = currentNode.getNextNode();
-        }
-        return sb.toString().trim();
     }
 
     /**
@@ -94,7 +106,7 @@ public class GenericQueue<T> implements QueueInterface<T> {
      * This method iterates through the queue and appends each element to a StringBuilder.
      * @return A string containing all elements in the queue, separated by spaces.
      */
-    public String display() { // is this method necessary?
+    public String display() {
         StringBuilder sb = new StringBuilder();
         Node currentNode = firstNode;
         while (currentNode != null) {
