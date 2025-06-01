@@ -35,8 +35,8 @@ public class Main {
 
         // For example, you can create a queue to manage tickets
         GenericDeque<Command> ticketQueue = new GenericDeque<>();
-        ticketQueue.addToBack(new Command("new", "Customer1", "Ticket1", "Issue1"));
-        ticketQueue.addToBack(new Command("new", "Customer2", "Ticket2", "Issue2"));
+        ticketQueue.addBack(new Command("new", "Customer1", "Ticket1", "Issue1"));
+        ticketQueue.addBack(new Command("new", "Customer2", "Ticket2", "Issue2"));
         System.out.println("Tickets in queue: " + ticketQueue.display());
         // You can also resolve tickets from the queue
         Command resolvedTicket = ticketQueue.removeFront();

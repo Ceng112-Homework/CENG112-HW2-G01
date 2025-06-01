@@ -58,13 +58,19 @@ public class GenericQueue<T> implements QueueInterface<T> {
 
     @SuppressWarnings("unchecked")
     public T[] getAll() {
-        T[] items = (T[]) new Object[numberOfItems];
-       Node currentNode = firstNode;
-       for (int i = 0; i < numberOfItems; i++) {
+        if (isEmpty()) {
+            return (T[]) new Object[0]; // return empty array if queue is empty
+        }
+
+        T sample = firstNode.getData();
+        T[] items = (T[]) java.lang.reflect.Array.newInstance(sample.getClass(), numberOfItems);
+
+        Node currentNode = firstNode;
+        for (int i = 0; i < numberOfItems; i++) {
            items[i] = currentNode.getData();
            currentNode = currentNode.getNextNode();
-       }
-       return items;
+        }
+        return items;
     }
 
     public void clear() {
