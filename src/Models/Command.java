@@ -1,47 +1,35 @@
 package Models;
 
+import java.util.List;
+
 public class Command {
     private String type; // e.g., new, resolve, display, history
-    private String customer;
-    private String name;
-    private String issue;
+    private List<String> arguments;
 
-    public Command(String type, String customer, String name, String issue) {
-        this.type = type;
-        this.customer = customer;
-        this.name = name;
-        this.issue = issue;
+    public Command(String type, List<String> arguments) {
+        this.type = type.toLowerCase();
+        this.arguments = arguments;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public List<String> getArguments() {
+        return arguments;
     }
 
-    public String getCustomer() {
-        return customer;
+    public String getArgument(int index) {
+        if (index < 0 || index >= arguments.size())
+            return null;
+        return arguments.get(index);            
     }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
+    @Override
+    public String toString() {
+        return "Command{" +
+                "type='" + type + '\'' +
+                ", arguments=" + arguments + '}';
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIssue() {
-        return issue;
-    }
-
-    public void setIssue(String issue) {
-        this.issue = issue;
-    }
 }
