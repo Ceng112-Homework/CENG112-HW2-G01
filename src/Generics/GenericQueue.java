@@ -1,5 +1,6 @@
 package Generics;
 
+import Interfaces.ListInterface;
 import Interfaces.QueueInterface;
 
 public class GenericQueue<T> implements QueueInterface<T> {
@@ -10,12 +11,10 @@ public class GenericQueue<T> implements QueueInterface<T> {
      * and clear the queue.
      */
 
-    private Node firstNode;
-    private Node lastNode;
-    private int numberOfItems;
+    private final ListInterface<T> queue;
 
     public GenericQueue() {
-        clear();
+        queue = new LinkedList<>();
     }
 
     /**
@@ -23,14 +22,7 @@ public class GenericQueue<T> implements QueueInterface<T> {
      * @param newEntry The entry to be added.
      */
     public void enqueue(T newEntry) {
-        Node newNode = new Node(newEntry, null);
-        if (isEmpty()) {
-            firstNode = newNode;
-        } else {
-            lastNode.setNextNode(newNode);
-        }
-        lastNode = newNode;
-        numberOfItems++;
+        queue.add(newEntry);
     }
 
     /**
@@ -38,17 +30,7 @@ public class GenericQueue<T> implements QueueInterface<T> {
      * @return The removed item.
      */
     public T dequeue() {
-        T front = null;
-        if (!isEmpty()) {
-            front = firstNode.getData();
-            firstNode = firstNode.getNextNode();
-
-            if (firstNode == null)
-                lastNode = null;
-
-            numberOfItems--;
-        }
-        return front;
+        return queue.remove(1);
     }
 
     /**
@@ -56,12 +38,7 @@ public class GenericQueue<T> implements QueueInterface<T> {
      * @return The first item in the queue.
      */
     public T getFront() {
-        if (isEmpty()) {
-            /*throw new Exception("Queue is empty");*/
-            return null; // Return null if the queue is empty
-        } else {
-            return firstNode.getData();
-        }
+        return queue.getEntry(1);
     }
 
     /**
@@ -69,7 +46,7 @@ public class GenericQueue<T> implements QueueInterface<T> {
      * @return true if queue is empty, false otherwise.
      */
     public boolean isEmpty() {
-        return firstNode == null && lastNode == null;
+        return queue.isEmpty();
     }
 
     /**
@@ -77,28 +54,14 @@ public class GenericQueue<T> implements QueueInterface<T> {
      */
     @SuppressWarnings("unchecked")
     public T[] getAll() {
-        if (isEmpty()) {
-            return (T[]) java.lang.reflect.Array.newInstance(Comparable.class, 0);
-        }
-
-        T sample = firstNode.getData();
-        T[] items = (T[]) java.lang.reflect.Array.newInstance(sample.getClass(), numberOfItems);
-
-        Node currentNode = firstNode;
-        for (int i = 0; i < numberOfItems; i++) {
-           items[i] = currentNode.getData();
-           currentNode = currentNode.getNextNode();
-        }
-        return items;
+        return queue.toArray();
     }
 
     /**
      * Clear the queue.
      */
     public void clear() {
-        firstNode = null;
-        lastNode = null;
-        numberOfItems = 0;
+        queue.clear();
     }
 
     /**
@@ -108,37 +71,11 @@ public class GenericQueue<T> implements QueueInterface<T> {
      */
     public String display() {
         StringBuilder sb = new StringBuilder();
-        Node currentNode = firstNode;
-        while (currentNode != null) {
-            sb.append(currentNode.getData()).append(" ");
-            currentNode = currentNode.getNextNode();
+        Object[] arr = queue.toArray();
+        for (Object obj: arr) {
+            String str = obj.toString();
+            sb.append(str).append(" ");
         }
         return sb.toString().trim();
-    }
-
-    private class Node {
-        private T data;
-        private Node next;
-
-        Node(T data, Node next) {
-            this.data = data;
-            this.next = next;
-        }
-
-        Node getNextNode() {
-            return next;
-        }
-
-        void setNextNode(Node next) {
-            this.next = next;
-        }
-
-        T getData() {
-            return data;
-        }
-
-        void setData(T data) {
-            this.data = data;
-        }
     }
 }
