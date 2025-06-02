@@ -9,19 +9,9 @@ public class Main {
 
         FileIO reader = new FileIO();
         // Example usage of FileIO
-        String filePath = "commands.txt"; // Example file path
+        String filePath = "Files/example_commands.csv"; // Example file path
         reader.readFile(filePath);
 
-        // You can also write or append to a file
-        String content = "Sample content to write to file.";
-        reader.writeFile(filePath, content);
-        reader.appendToFile(filePath, "Appending this content to the file.");
-
-
-        // Further processing can be done here, such as initializing the queue or priority queue
-        // and processing commands from the file.
-        System.out.println("File operations completed.");
-        // You can also initialize the CommandProcessor and process commands
         // CommandProcessor commandProcessor = new CommandProcessor();
         // commandProcessor.processCommand("new"); // command to create a new ticket
         // commandProcessor.processCommand("resolve"); // resolve the next ticket
