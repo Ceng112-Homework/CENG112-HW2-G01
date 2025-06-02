@@ -79,7 +79,6 @@ public class GenericDeque<T> implements DequeInterface<T> {
         return back;
     }
 
-    @SuppressWarnings("unchecked")
     public T[] getAll() {
         T[] items = (T[]) new Object[numberOfItems];
         DLNode currentNode = firstNode;
@@ -111,7 +110,7 @@ public class GenericDeque<T> implements DequeInterface<T> {
     }
 
     private class DLNode {
-        private final T data;
+        private T data;
         private DLNode next;
         private DLNode previous;
 
@@ -139,6 +138,10 @@ public class GenericDeque<T> implements DequeInterface<T> {
 
         T getData() {
             return data;
+        }
+
+        void setData(T data) {
+            this.data = data;
         }
     }
 }
