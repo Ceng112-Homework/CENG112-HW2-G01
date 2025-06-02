@@ -1,147 +1,61 @@
 package Generics;
 
 import Interfaces.DequeInterface;
+import Interfaces.ListInterface;
 
 public class GenericDeque<T> implements DequeInterface<T> {
-    private DLNode firstNode;
-    private DLNode lastNode;
-    private int numberOfItems;
+
+    private final ListInterface<T> deque;
 
     public GenericDeque() {
-        clear();
+        deque = new LinkedList<>();
     }
 
     public T getFront() {
-        if (isEmpty()) {
-            /*throw new Exception("Queue is empty");*/
-            return null; // Return null if the queue is empty
-        } else {
-            return firstNode.getData();
-        }
+        return deque.getEntry(1);
     }
 
     public T getBack() {
-        if (isEmpty()) {
-            /*throw new Exception("Queue is empty");*/
-            return null; // Return null if the queue is empty
-        } else {
-            return lastNode.getData();
-        }
+        int length = deque.getLength();
+        return deque.getEntry(length);
     }
 
     public void addFront(T newEntry) {
-        DLNode newNode = new DLNode(null, newEntry, firstNode);
-        if (isEmpty()) {
-            lastNode = newNode;
-        } else {
-            firstNode.setPreviousNode(newNode);
-        }
-        firstNode = newNode;
-        numberOfItems++;
+        deque.add(1, newEntry);
     }
 
     public void addBack(T newEntry){
-        DLNode newNode = new DLNode(lastNode, newEntry, null);
-        if (isEmpty()) {
-            firstNode = newNode;
-        } else {
-            lastNode.setNextNode(newNode);
-        }
-        lastNode = newNode;
-        numberOfItems++;
+        deque.add(newEntry);
     }
 
     public T removeFront() {
-        T front = null;
-        if (!isEmpty()) {
-            front = firstNode.getData();
-            firstNode = firstNode.getNextNode();
-            if (firstNode == null)
-                lastNode = null;
-            else
-                firstNode.setPreviousNode(null);
-            numberOfItems--;
-        }
-        return front;
+        return deque.remove(1);
     }
 
     public T removeBack() {
-        T back = null;
-        if (!isEmpty()) {
-            back = lastNode.getData();
-            lastNode = lastNode.getPreviousNode();
-            if (lastNode == null)
-                firstNode = null;
-            else
-                lastNode.setNextNode(null);
-            numberOfItems--;
-        }
-        return back;
+        int length = deque.getLength();
+        return deque.remove(length);
     }
 
     public T[] getAll() {
-        T[] items = (T[]) new Object[numberOfItems];
-        DLNode currentNode = firstNode;
-        for (int i = 0; i < numberOfItems; i++) {
-            items[i] = currentNode.getData();
-            currentNode = currentNode.getNextNode();
-        }
-        return items;
+        return deque.toArray();
     }
 
     public boolean isEmpty() {
-        return firstNode == null && lastNode == null;
+        return deque.isEmpty();
     }
 
     public void clear() {
-        firstNode = null;
-        lastNode = null;
-        numberOfItems = 0;
+        deque.clear();
     }
 
     public String display() {
         StringBuilder sb = new StringBuilder();
-        DLNode currentNode = firstNode;
-        while (currentNode != null) {
-            sb.append(currentNode.getData()).append(" ");
-            currentNode = currentNode.getNextNode();
+        Object[] arr = deque.toArray();
+        for (Object obj : arr) {
+            String str = (String) obj;
+            sb.append(str).append(" ");
         }
         return sb.toString().trim(); // Return the string representation of the deque
-    }
-
-    private class DLNode {
-        private T data;
-        private DLNode next;
-        private DLNode previous;
-
-        DLNode(DLNode previous, T data, DLNode next) {
-            this.data = data;
-            this.next = next;
-            this.previous = previous;
-        }
-
-        DLNode getNextNode() {
-            return next;
-        }
-
-        void setNextNode(DLNode next) {
-            this.next = next;
-        }
-
-        DLNode getPreviousNode() {
-            return previous;
-        }
-
-        void setPreviousNode(DLNode previous) {
-            this.previous = previous;
-        }
-
-        T getData() {
-            return data;
-        }
-
-        void setData(T data) {
-            this.data = data;
-        }
     }
 }
