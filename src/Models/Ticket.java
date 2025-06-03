@@ -17,14 +17,21 @@ public class Ticket implements Comparable<Ticket>, HasPriority {
         this.arrivalTime = arrivalTime;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public String getIssueDescription() {
+        return issueDescription;
+    }
+
+    public Date getArrivalTime() {
+        return arrivalTime;
+    }
+
     @Override
     public String toString() {
-        return "Ticket{" +
-                "customerName='" + customerName + "'" +
-                ", issueDescription='" + issueDescription + "'" +
-                ", priority='" + priority + "'" +
-                ", arrivalTime=" + arrivalTime +
-                '}';
+        return customerName + " - " + issueDescription + " [" + priority + " Priority]";
     }
 
     /**
