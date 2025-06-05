@@ -1,5 +1,6 @@
 package Interfaces;
 
+// This interface defines the basic operations for a list data structure.
 public interface ListInterface<T> {
     void add (T newEntry);
 

@@ -2,17 +2,20 @@ package Generics;
 
 import Interfaces.ListInterface;
 
+// Generic linked list implementation
 public class LinkedList<T> implements ListInterface<T> {
 
+    // Instance variables
     private Node firstNode; // head reference to first node
     private Node lastNode; // tail reference to last node
     private int numberOfEntries; // number of entries in the list
 
+    // Default constructor initializes an empty linked list
     public LinkedList() {
         clear();
     }
 
-    @Override
+    // Adds a new entry to the end of the list.
     public void add(T newEntry) {
         Node newNode = new Node(newEntry);
         if (isEmpty())
@@ -23,51 +26,56 @@ public class LinkedList<T> implements ListInterface<T> {
         numberOfEntries++;
     }
 
-    @Override
+    // Adds a new entry at a specified position in the list.
     public boolean add(int newPosition, T newEntry) {
+
+        // flag to indicate if the addition was successful
         boolean isSuccessful = true;
+
+        // Check if the new position is valid
         if ((newPosition >= 1) && (newPosition <= numberOfEntries + 1)) {
             Node newNode = new Node(newEntry);
-            if (isEmpty()) {
+            if (isEmpty()) {  // insert into an empty list
                 firstNode = newNode;
                 lastNode = newNode;
             }
-            else if (newPosition == 1) {
+            else if (newPosition == 1) { // insert at the beginning
                 newNode.setNextNode(firstNode);
                 firstNode = newNode;
             }
-            else if (newPosition == numberOfEntries + 1) {
+            else if (newPosition == numberOfEntries + 1) { // insert at the end
                 lastNode.setNextNode(newNode);
                 lastNode = newNode;
             }
-            else {
+            else { // insert in the middle
                 Node nodeBefore = getNodeAt(newPosition - 1);
                 Node nodeAfter = nodeBefore.getNextNode();
                 newNode.setNextNode(nodeAfter);
                 nodeBefore.setNextNode(newNode);
             }
-            numberOfEntries++;
+            numberOfEntries++; // increment the count of entries
         }
         else
-            isSuccessful = false;
+            isSuccessful = false; // invalid position
 
         return isSuccessful;
     }
 
-    @Override
+    // Removes the first occurrence of a specified entry from the list.
     public T remove(int givenPosition) {
-        T result = null;
+        T result = null; // initially no entry is removed
 
+        // Check if the given position is valid
         if ((givenPosition >= 1) && (givenPosition <= numberOfEntries)) {
             assert !isEmpty();
-            if (givenPosition == 1) {
-                result = firstNode.getData(); // save entry to be removed
+            if (givenPosition == 1) { // remove the first node
+                result = firstNode.getData();
                 firstNode = firstNode.getNextNode();
                 if (numberOfEntries == 1) {
                     lastNode = null;
                 }
             }
-            else {
+            else { // remove a node from the middle or end
                 Node nodeBefore = getNodeAt(givenPosition - 1);
                 Node nodeToRemove = nodeBefore.getNextNode();
                 Node nodeAfter = nodeToRemove.getNextNode();
@@ -77,21 +85,23 @@ public class LinkedList<T> implements ListInterface<T> {
                     lastNode = nodeBefore;
                 }
             }
-            numberOfEntries--;
+            numberOfEntries--; // decrement the count of entries
         }
-        return result;
+        return result; // return the removed entry or null if not found
     }
 
-    @Override
+    // Clear the list.
     public final void clear() {
         firstNode = null;
         lastNode = null;
         numberOfEntries = 0;
     }
 
-    @Override
+    // Replaces the entry at a specified position with a new entry.
     public boolean replace(int givenPosition, T newEntry) {
-        boolean isSuccessful = true;
+        boolean isSuccessful = true; // flag to indicate if the replacement was successful
+
+        // Check if the given position is valid
         if ((givenPosition >= 1) && (givenPosition <= numberOfEntries)) {
             assert !isEmpty();
             Node desiredNode = getNodeAt(givenPosition);
@@ -102,17 +112,19 @@ public class LinkedList<T> implements ListInterface<T> {
         return isSuccessful;
     }
 
-    @Override
+    // Retrieves the entry at a specified position.
     public T getEntry(int givenPosition) {
-        T result = null;
+        T result = null; // initially no entry is found
+
+        // Check if the given position is valid
         if ((givenPosition >= 1) && (givenPosition <= numberOfEntries)) {
             assert !isEmpty();
-            result = getNodeAt(givenPosition).getData();
+            result = getNodeAt(givenPosition).getData(); // retrieve the data from the node
         }
-        return result;
+        return result; // return the found entry or null if not found
     }
 
-    @Override
+    // Checks if the list contains a specified entry.
     public boolean contains(T anEntry) {
         boolean found = false;
         Node currentNode = firstNode;
