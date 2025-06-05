@@ -2,16 +2,14 @@ package Services;
 
 import Generics.GenericHistory;
 import Generics.GenericPriorityQueue;
-import Interfaces.ListInterface;
-import Interfaces.PriorityQueueInterface;
 import Models.Command;
 import Models.Ticket;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class CommandProcessor {
-    // This class will process commands from the user.
     private final GenericPriorityQueue<Ticket> ticketQueue;
     private final GenericHistory<Ticket> history;
 
@@ -20,12 +18,7 @@ public class CommandProcessor {
         history = new GenericHistory<>();
     }
 
-    public void processCommand(Command command) {
-        // Parse the command and execute the appropriate action
-        // For example, if the command is "new", create a new ticket
-        // If the command is "resolve", resolve the next ticket in the queue
-        // If the command is "display", show all tickets in the queue
-        // If the command is "history", show resolved tickets history
+    public void processCommand(Command command) throws Exception{
         String commandType = command.getType().toLowerCase();
         switch (commandType) {
             case "new":
@@ -55,50 +48,52 @@ public class CommandProcessor {
     }
 
     private void resolveTicket() {
-        System.out.println("Resolving Ticket:");
         Ticket resolvedTicket = ticketQueue.poll();
+        System.out.println("\nResolving Ticket:\n" + "Resolved:" + resolvedTicket);
         history.add(resolvedTicket);
-        System.out.println("Resolved: " + resolvedTicket);
     }
 
-    private void displayTickets(String order) {
+    private void displayTickets(String order) throws Exception {
+        List<Ticket> ticketList = ticketQueue.getAll();
+
         if (order == null) {
-            // logic will be implemented
+            throw new Exception("\nOrder cannot be null. Please specify an order.");
         }
-        if (order.toLowerCase().equals("priority")) {
-            System.out.println("--- Displaying Active Tickets (By Priority) ---");
-            // logic will be implemented
+        else if (order.equalsIgnoreCase("priority")) {
+            System.out.println("\n--- Displaying Active Tickets (By Priority) ---");
+            ticketList.sort((t1, t2) -> t1.compareTo(t2));
         }
-        if (order.toLowerCase().equals("asc")) {
-            System.out.println("--- Displaying Active Tickets (By ASC - Oldest First) ---");
-            // logic will be implemented
+        else if (order.equalsIgnoreCase("asc")) {
+            System.out.println("\n--- Displaying Active Tickets (ASC - Oldest First) ---");
+            ticketList = ticketQueue.getChronological(false);
+
         }
-        if (order.toLowerCase().equals("desc")) {
-            System.out.println("--- Displaying Active Tickets (By DESC - Newest First) ---");
-            // logic will be implemented
+        else if (order.equalsIgnoreCase("desc")) {
+            System.out.println("\n--- Displaying Active Tickets (DESC - Newest First) ---");
+            ticketList = ticketQueue.getChronological(true);
         }
-        Object[] ticketObjects =  ticketQueue.getAll();
-        for (Object ticketObj: ticketObjects) {
-            System.out.println(ticketObj);
+        for (Ticket ticket: ticketList) {
+            System.out.println(ticket);
         }
     }
 
     private void displayHistory(String order) {
+        List<Ticket> ticketHistory = history.getAll();
+
         if (order == null) {
-            // logic will be implemented
+            System.out.println("\n--- Resolved Ticket History (Sorted by Customer Name) ---");
+            ticketHistory.sort((t1, t2) -> t1.getCustomerName().compareTo(t2.getCustomerName()));
         }
-        if (order.toLowerCase().equals("asc")) {
-            System.out.println("--- Displaying Active Tickets (By ASC - Oldest First) ---");
-            // logic will be implemented
+        else if (order.equalsIgnoreCase("asc")) {
+            System.out.println("\n--- Resolved Ticket History (ASC - Oldest First) ---");
         }
-        if (order.toLowerCase().equals("desc")) {
-            System.out.println("--- Displaying Active Tickets (By DESC - Newest First) ---");
-            // logic will be implemented
+        else if (order.equalsIgnoreCase("desc")) {
+            System.out.println("\n--- Resolved Ticket History (DESC - Newest First) ---");
+            Collections.reverse(ticketHistory);
         }
 
-        Object[] resolvedTickets =  history.getAll();
-        for (Object ticketObj: resolvedTickets) {
-            System.out.println(ticketObj);
+        for (Ticket ticket: ticketHistory) {
+            System.out.println(ticket);
         }
     }
 }

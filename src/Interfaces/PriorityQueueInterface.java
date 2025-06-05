@@ -1,9 +1,10 @@
 package Interfaces;
 
+import java.util.List;
+
 public interface PriorityQueueInterface<T> {
     T offer(T item);
     T poll();
     boolean isEmpty();
-    T[] getAll(); // I don't know what should this method returns.
-
+    List<T> getAll();
 }

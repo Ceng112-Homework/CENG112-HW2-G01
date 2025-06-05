@@ -34,14 +34,7 @@ public class Ticket implements Comparable<Ticket>, HasPriority {
         return customerName + " - " + issueDescription + " [" + priority + " Priority]";
     }
 
-    /**
-     * Compare the ticket with another ticket.
-     * If their priorities are the same, it compares by the arrival times.
-     * -1 => This ticket has more priority
-     *  1 => This ticket has less priority
-     * @param otherTicket the object to be compared.
-     * @return the comparison result
-     */
+
     @Override
     public int compareTo(Ticket otherTicket) {
         int thisPriority = this.getPriorityValue();
@@ -52,13 +45,7 @@ public class Ticket implements Comparable<Ticket>, HasPriority {
             return this.arrivalTime.compareTo(otherTicket.arrivalTime);
     }
 
-    /**
-     * get the priority value of the ticket
-     * 3 -> high
-     * 2 -> medium
-     * 1 -> low
-     * @return the priority value
-     */
+
     @Override
     public int getPriorityValue() {
         int value = 0;

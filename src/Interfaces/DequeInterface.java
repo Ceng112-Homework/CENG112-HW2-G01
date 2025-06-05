@@ -1,5 +1,7 @@
 package Interfaces;
 
+import java.util.List;
+
 public interface DequeInterface<T> {
     void addFront(T item);
     void addBack(T item);
@@ -8,5 +10,5 @@ public interface DequeInterface<T> {
     boolean isEmpty();
     void clear();
     String display();
-    T[] getAll();
+    List<T> getAll();
 }

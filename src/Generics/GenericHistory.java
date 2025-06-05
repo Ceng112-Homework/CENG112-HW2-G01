@@ -2,6 +2,10 @@ package Generics;
 
 import Interfaces.ListInterface;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class GenericHistory<T> {
     private final ListInterface<T> history; // Queue is a linked list
 
@@ -13,8 +17,8 @@ public class GenericHistory<T> {
         history.add(action);
     }
 
-    public T[] getAll() {
-        return history.toArray();
+    public List<T> getAll() {
+        return new ArrayList<>(Arrays.asList(history.toArray()));
     }
 
     public void display() {

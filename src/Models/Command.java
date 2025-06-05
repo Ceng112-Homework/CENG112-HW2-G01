@@ -3,8 +3,8 @@ package Models;
 import java.util.List;
 
 public class Command {
-    private String type; // e.g., new, resolve, display, history
-    private List<String> arguments;
+    private final String type; // e.g., new, resolve, display, history
+    private final List<String> arguments;
 
     public Command(String type, List<String> arguments) {
         this.type = type.toLowerCase();
@@ -22,7 +22,7 @@ public class Command {
     public String getArgument(int index) {
         if (index < 0 || index >= arguments.size())
             return null;
-        return arguments.get(index);            
+        return arguments.get(index);
     }
 
     @Override

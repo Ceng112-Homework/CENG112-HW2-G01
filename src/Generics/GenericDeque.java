@@ -3,6 +3,10 @@ package Generics;
 import Interfaces.DequeInterface;
 import Interfaces.ListInterface;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class GenericDeque<T> implements DequeInterface<T> {
 
     private final ListInterface<T> deque;
@@ -37,8 +41,10 @@ public class GenericDeque<T> implements DequeInterface<T> {
         return deque.remove(length);
     }
 
-    public T[] getAll() {
-        return deque.toArray();
+    public List<T> getAll() {
+        List<T> list = new ArrayList<>();
+        list.addAll(Arrays.asList(deque.toArray()));
+        return list;
     }
 
     public boolean isEmpty() {
